@@ -2,6 +2,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,21 +11,59 @@ import javax.swing.border.EmptyBorder;
 
 public class Tanke extends JFrame{
   private JPanel contentPane;
+  private int movx=0;
+  private int movy=0;
+  private int [] vx1;
+  private int [] vy1;
+  private int direccion=0;
+  public int getX(){
+    return movx;
+  }
+  public int getY(){
+    return movy;
+  }
 
     /**
      * Launch the application.
      */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    Tanke frame = new Tanke();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+     private void suma(){
+       
+       switch(direccion) {
+
+                         case 1: {
+
+                               movy-=5;
+                               direccion=0;
+                               break;
+                         }
+                         case 2: {
+
+                               movy +=5;
+                               direccion=0;
+                               break;
+                         }
+                         case 3: {
+
+                               movx -=5;
+                               direccion=0;
+                               break;
+                         }
+                         case 4: {
+
+                               movx +=5;
+                               direccion=0;
+                               break;
+                         }
+                 }
+     }
+    public static void main(String[] args) throws InterruptedException{
+      Tanke frame = new Tanke();
+      frame.setVisible(true);
+        while(frame.getX()<800 && frame.getY()<600){
+          frame.suma();
+          frame.repaint();
+          Thread.sleep(10);
+        }
       }
 
         public Tanke() {
@@ -34,26 +74,69 @@ public class Tanke extends JFrame{
           setContentPane(contentPane);
           contentPane.setLayout(null);
           setBounds(0,0,800,600);
+          KeyListener listener = new MyKeyListener();
+		      this.addKeyListener(listener);
+		      this.setFocusable(true);
+          vx1 = new int[5];
+          vx1[0]=100;vx1[1]=50;vx1[2]=50;vx1[3]=150;vx1[4]=150;
+          vy1 = new int[5];
+          vy1[0]=50;vy1[1]=100;vy1[2]=150;vy1[3]=150;vy1[4]=100;
+
       }
       public void paint (Graphics g){
           super.paint(g);
 
           g.setColor (Color.blue);
-          g.drawLine (0, 70, 100, 70);
-          g.drawRect (150, 70, 50, 70);
-          g.drawRoundRect (250, 70, 50, 70, 6, 6);
-          g.drawOval (350, 70, 50, 70);
-          int [] vx1 = {500, 550, 450};
-          int [] vy1 = {70, 120, 120};
-          g.drawPolygon (vx1, vy1, 3);
 
-          g.setColor (Color.red);
-          g.fillRect (150, 270, 50, 70);
-          g.fillRoundRect (250, 270, 50, 70, 6, 6);
-          g.fillOval (350, 270, 50, 70);
-          int [] vx2 = {500, 550, 450};
-          int [] vy2 = {270, 320, 320};
-          g.fillPolygon (vx2, vy2, 3);
+          //g.drawLine (0, 70, 100, 70);
+          //g.fillRoundRect(150, 70, 50, 70);
+          //g.drawRoundRect (250, 70, 50, 70, 6, 6);
+          //g.drawOval (350, 70, 50, 70);
+          for (int i=0;i<5;i++) {
+            vx1[i]=vx1[i]+movx;
+            vy1[i]=vy1[i]+movy;
+          }
+          movx=0;
+          movy=0;
+          g.drawPolygon (vx1, vy1, 5);
+
+          //g.setColor (Color.red);
+          //g.fillRect (150, 270, 50, 70);
+          //g.fillRoundRect (250, 270, 50, 70, 6, 6);
+          //g.fillOval (350, 270, 50, 70);
+          //int [] vx2 = {500, 550, 450};
+          //int [] vy2 = {270, 320, 320};
+          //g.fillPolygon (vx2, vy2, 3);
       }
+
+  public class MyKeyListener implements KeyListener {
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_UP){
+                 direccion = 1;
+             //Presiono flecha abajo
+             } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+
+                 direccion = 2;
+             //Presiono flecha izquierda
+             } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+
+                 direccion = 3;
+             //Presiono flecha derecha
+             } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+
+                 direccion = 4;
+             }
+    }
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+	}
+}
 
 }
