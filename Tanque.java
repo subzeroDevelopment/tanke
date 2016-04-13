@@ -1,17 +1,51 @@
 class Tanque{
-  private int [][] puntos;
-
-  Tanque(int [][] arre){
-    puntos=arre;
+  private int [] puntosx;
+  private int [] puntosy;
+  private int nl;
+  private boolean disparo;
+  private int indxp;
+  Tanque(int []arre1, int []arre2,int n,int in){
+    puntosx=arre1;
+    puntosy=arre2;
+    nl=n;
+    disparo=false;
+    indxp=in;
   }
 
-  public int[][] getPuntos(){
-    return puntos;
+  public int getPunta(){
+    return indxp;
   }
 
-  public void setPuntos(int [][] arre){
-    puntos=arre;
+  public boolean getDisparar(){
+    return disparo;
   }
+
+  void setDisparar(boolean n){
+    disparo=n;
+  }
+  void sumarApuntosX(int i){
+    for (int t=0;t<nl;t++) {
+      puntosx[t]=puntosx[t]+i;
+    }
+  }
+
+  void sumarApuntosY(int i){
+    for (int t=0;t<nl;t++) {
+      puntosy[t]=puntosy[t]+i;
+    }
+  }
+
+
+  public int[] getPuntosX(){
+    return puntosx;
+  }
+  public int[] getPuntosY(){
+    return puntosy;
+  }
+  public int getNL(){
+    return nl;
+  }
+
 
   public static void main(String[] args) {
     int [][] ar=new int[2][5];
@@ -25,15 +59,6 @@ class Tanque{
     ar[1][3]=120;
     ar[0][4]=145;
     ar[1][4]=80;
-
-    Tanque n=new Tanque(ar);
-    int [][]s=n.getPuntos();
-    for (int i=0;i<2;i++) {
-      for (int j=0;j<5;j++) {
-        System.out.print(s[i][j]+" ");
-      }
-      System.out.println();
-    }
 
   }
 

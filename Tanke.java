@@ -13,8 +13,7 @@ public class Tanke extends JFrame{
   private JPanel contentPane;
   private int movx=0;
   private int movy=0;
-  private int [] vx1;
-  private int [] vy1;
+  private Tanque player;
   private int direccion=0;
   public int getX(){
     return movx;
@@ -27,7 +26,7 @@ public class Tanke extends JFrame{
      * Launch the application.
      */
      private void suma(){
-       
+
        switch(direccion) {
 
                          case 1: {
@@ -77,10 +76,11 @@ public class Tanke extends JFrame{
           KeyListener listener = new MyKeyListener();
 		      this.addKeyListener(listener);
 		      this.setFocusable(true);
-          vx1 = new int[5];
+          int [] vx1 = new int[5];
           vx1[0]=100;vx1[1]=50;vx1[2]=50;vx1[3]=150;vx1[4]=150;
-          vy1 = new int[5];
+          int [] vy1 = new int[5];
           vy1[0]=50;vy1[1]=100;vy1[2]=150;vy1[3]=150;vy1[4]=100;
+          player=new Tanque(vx1,vy1,5,0);
 
       }
       public void paint (Graphics g){
@@ -92,13 +92,16 @@ public class Tanke extends JFrame{
           //g.fillRoundRect(150, 70, 50, 70);
           //g.drawRoundRect (250, 70, 50, 70, 6, 6);
           //g.drawOval (350, 70, 50, 70);
-          for (int i=0;i<5;i++) {
-            vx1[i]=vx1[i]+movx;
-            vy1[i]=vy1[i]+movy;
+          player.sumarApuntosX(movx);
+          player.sumarApuntosY(movy);
+          if(player.getDisparar()==true){
+            System.out.println("disparo");
+            
           }
+          player.setDisparar(false);
           movx=0;
           movy=0;
-          g.drawPolygon (vx1, vy1, 5);
+          g.drawPolygon (player.getPuntosX(),player.getPuntosY(),player.getNL());
 
           //g.setColor (Color.red);
           //g.fillRect (150, 270, 50, 70);
@@ -131,6 +134,9 @@ public class Tanke extends JFrame{
              } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 
                  direccion = 4;
+             }
+             else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+               player.setDisparar(true);
              }
     }
 
